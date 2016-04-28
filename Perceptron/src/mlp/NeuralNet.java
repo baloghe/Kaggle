@@ -172,7 +172,11 @@ public class NeuralNet {
 		}
 		
 		//return Results from the output layer
-		return output_layer.getResults();
+		double[] ret = new double[output_layer.getNeuronNumber()];
+		for(int i=0; i<ret.length; i++){
+			ret[i] = output_layer.getResults()[i];
+		}
+		return ret;
 	}
 	
 	/**

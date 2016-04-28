@@ -6,14 +6,22 @@ import mlp.NeuralNet;
 import mlp.TanHFunction;
 import mlp.Util;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+/** JUnit test automation class for testing the following example (taken from CS188 at Berkeley):
+ * 		http://www-inst.eecs.berkeley.edu/~cs188/sp08/projects/backprop/project6.html
+ *  A Neural Net with 2 input nodes, 3 intermediate nodes, and 1 output node should be constructed, 
+ *  with TanH as activation function.
+ *  
+ *  Expectation: the Net should produce the expected output at least on the training set.
+ * */
 public class TstBerkeleyOnly {
 
 	@Test
-	public void testNet5(){
+	public void testNet(){
 		//source: http://www-inst.eecs.berkeley.edu/~cs188/sp08/projects/backprop/project6.html
-		System.out.println("testNet :: berkeley homework  -- Start");
+		
 		double trainInputs[][] = new double[][] {   
 				{  -7.7947021e-01,   8.3822138e-01},
 				{   1.5563491e-01,   8.9537743e-01},
@@ -96,7 +104,23 @@ public class TstBerkeleyOnly {
 		System.out.println("Target: " + "+1.0");
 		System.out.println("Output: " + Util.doubleArrayToString(nn.predict(trial)));
 		
-		System.out.println("testNet :: berkeley homework  -- End");
+		ArrayList<double[]> massPred = nn.massPredict(trfMatToArrList(trainInputs));
+		for(int i=0; i<massPred.size(); i++){
+			double p = (massPred.get(i)[0] > 0.0) ? 1.0 : -1.0 ;
+			if(p != trainOutput[i][0]){
+				System.out.println("Berkeley test failure: i=" + i + ", predicted=" + massPred.get(i)[0] + ", expected=" + trainOutput[i][0]);
+			} 
+			Assert.assertEquals(p, trainOutput[i][0], 0.0001);
+		}
+		
+	}
+	
+	private ArrayList<double[]> trfMatToArrList(double[][] inMat){
+		ArrayList<double[]> ret = new ArrayList<double[]>();
+		for(double[] v : inMat){
+			ret.add(v);
+		}
+		return ret;
 	}
 	
 }
